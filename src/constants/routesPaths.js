@@ -1,5 +1,5 @@
-export const routes = {
+export const routesPaths = {
   index: '/',
-  login: 'login',
-  signUp: 'sign-up'
+  login: '/login',
+  signUp: '/sign-up'
 };

@@ -2,15 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link, browserHistory } from 'react-router';
+import { Link, Redirect } from 'react-router-dom';
 import * as sessionActions from '../actions/sessionActions';
 import LoginForm from '../components/session/LoginForm'; // eslint-disable-line import/no-named-as-default
 import Loading from '../components/common/Loading';
-import { routes } from '../constants/routesPaths';
+import { routesPaths } from '../constants/routesPaths';
 
-const LoginPage = ({ actions: { login }, authenticated, loading }) => {
+const LoginPage = ({ actions: { login }, authenticated, loading, history: { location: { state } } }) => {
   if (authenticated) {
-    browserHistory.push(routes.index);
+    return <Redirect to={state ? state.nextPathname : routesPaths.index} />;
   }
 
   if (loading) {
@@ -21,7 +21,7 @@ const LoginPage = ({ actions: { login }, authenticated, loading }) => {
     <div>
       <p>LOGIN</p>
       <LoginForm onSubmit={login} />
-      <Link to={routes.signUp}> Sign up </Link>
+      <Link to={routesPaths.signUp}> Sign up </Link>
     </div>
   );
 };
@@ -32,6 +32,7 @@ LoginPage.propTypes = {
   actions: object.isRequired,
   authenticated: bool.isRequired,
   loading: bool.isRequired,
+  history: object.isRequired
 };
 
 const mapStateToProps = ({ session: { authenticated }, auth: { loading } }) => ({

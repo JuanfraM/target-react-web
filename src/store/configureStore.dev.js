@@ -4,29 +4,22 @@
 
 import { createStore, compose, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
+import { routerMiddleware } from 'react-router-redux';
 import { Iterable } from 'immutable';
-import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import { createLogger } from 'redux-logger';
 import _ from 'lodash';
+
+import history from '../utils/history';
 import rootReducer from '../reducers';
 
 export default function configureStore(initialState) {
   const logger = createLogger({
     collapsed: true,
     predicate: (getState, { type }) => !_.startsWith(type, '@@router') && !_.startsWith(type, '@@redux-form'),
-    stateTransformer: (state) => {
-      const newState = {};
-
-      Object.keys(state).forEach((i) => {
-        newState[i] = Iterable.isIterable(state[i]) ? state[i].toJS() : state[i];
-      });
-
-      return newState;
-    }
+    stateTransformer: state => (Iterable.isIterable(state) ? state.toJS() : state)
   });
-
   const middewares = [
-    reduxImmutableStateInvariant(),
+    routerMiddleware(history),
 
     // thunk middleware can also accept an extra argument to be passed to each thunk action
     // https://github.com/gaearon/redux-thunk#injecting-a-custom-argument

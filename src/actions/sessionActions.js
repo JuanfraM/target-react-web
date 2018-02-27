@@ -1,8 +1,6 @@
 import { SubmissionError } from 'redux-form';
-import { browserHistory } from 'react-router';
 import { sessionService } from 'redux-react-session';
 import sessionApi from '../api/sessionApi';
-import { routes } from '../constants/routesPaths';
 import * as types from '../actions/actionTypes';
 
 const loginSent = () => ({
@@ -36,7 +34,6 @@ export const login = user =>
       sessionService.saveUser(user)
       .then(() => {
         dispatch(loginSuccess());
-        browserHistory.push(routes.index);
       });
     }).catch((err) => {
       dispatch(loginFailure());
@@ -53,7 +50,6 @@ export const logout = () =>
       sessionService.deleteSession();
       sessionService.deleteUser();
       dispatch(logoutSuccess());
-      browserHistory.push(routes.login);
     }).catch((err) => {
       dispatch(logoutFailure());
       throw (err);

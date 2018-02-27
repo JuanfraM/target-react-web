@@ -1,8 +1,6 @@
 import { SubmissionError } from 'redux-form';
-import { browserHistory } from 'react-router';
 import { sessionService } from 'redux-react-session';
 import sessionApi from '../api/sessionApi';
-import { routes } from '../constants/routesPaths';
 import * as types from '../actions/actionTypes';
 
 const signUpSent = () => ({
@@ -24,7 +22,6 @@ export const signUp = user =>
       sessionService.saveUser(user)
       .then(() => {
         dispatch(signUpSuccess());
-        browserHistory.push(routes.index);
       });
     }).catch((err) => {
       dispatch(signUpFailure());

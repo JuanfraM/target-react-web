@@ -1,8 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import { sessionService } from 'redux-react-session';
-import { browserHistory } from 'react-router';
 import humps from 'humps';
-import { routes } from '../constants/routesPaths';
 
 const saveSessionHeaders = (headers) => {
   if (headers.get('access-token')) {
@@ -32,7 +30,6 @@ const handleErrors = response =>
     .catch(() => {
       if (response.status === 401) {
         sessionService.deleteSession();
-        browserHistory.replace(routes.login);
       }
     });
 
